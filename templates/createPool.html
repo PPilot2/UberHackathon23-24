@@ -4,7 +4,7 @@
 {% block content %}
     {% block nav%}
     {% endblock %}
-    <h2>Carpools will last 15 minutes before closing if another user does not join your carpool.</h2>
+    <h2>Carpools will last until you close your carpool.</h2>
     //full functionality has not been implemented on the backend yet
     <form method="post">
         <p>
@@ -12,12 +12,19 @@
             <input type="text" name="location" id="location" placeholder="location">
         </p>
         <p>
-            <label for="addressButton">What is your current address?</label>
-            <input type="button" name="addressButton" id="addressButton" placeholder="current address" value="Get Location" onclick="getLocation()">
+            <label for="currentUserLocation">What is your current address?</label>
+            <input type="text" name="currentUserLocation" id="currentUserLocation" placeholder="current address">
         </p>
         <p>
-            <label for="submit">Create a carpool</label>
-            <input type="submit" name="submit">
+            <label for="userState">What state are you currently in?</label>
+            <input type="text" name="userState" id="userState" placeholder="State">
+        </p>
+        <p>
+            <label for="userCountry">What country are you currently in?</label>
+            <input type="text" name="userCountry" id="userCountry" placeholder="Country">
+        </p>
+        <p>
+            <input type="submit" name="submit" value="Submit">
         </p>
     </form>
 {% endblock %}
