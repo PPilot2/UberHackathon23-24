@@ -1,0 +1,29 @@
+body {
+    background-color: rgb(156, 209, 255);
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    color: white;
+}
+h1 {
+    font-size: 160px;
+}
+a {
+    color: black;
+    text-decoration: none;
+    font-size: 40px;
+}
+#loginButton, #registerButton {
+    padding: 10px;
+}
+
+#signupButton {
+    position: relative;
+    padding: 100px;
+}
+
+input[type="text"], input[type="password"], input[type="submit"] {
+    padding: 10px;
+    border-radius: 5px;
+    background-color: white;
+    font-size: 30px;
+}

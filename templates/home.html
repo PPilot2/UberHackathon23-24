@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+<title>{% block title %} - Home{% endblock %}</title>
+{% block content %}
+    <h1>CodeX</h1>
+    <div id="loginButton">
+        <a href="{{ url_for('login') }}">Login</a><br>
+    </div>
+    <div id="registerButton">
+        <a href="{{ url_for('register') }}">Register</a><br>
+    </div>
+{% endblock %}
