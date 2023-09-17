@@ -1,0 +1,8 @@
+{% block nav %}
+        <nav>
+            <a href="{{ url_for('dashboard') }}" class="navLink">Dashboard</a>
+            <a href="{{ url_for('pool') }}" class="navLink">Carpool</a>
+            <a href="{{ url_for('about') }}" class="navLink">About</a>
+            <a href="{{url_for('logout')}}" class="navLink">Logout</a>
+        </nav>
+{% endblock %}

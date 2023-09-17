@@ -1,0 +1,11 @@
+{% extends 'base.html '%}
+{% include 'nav.html' %}
+<title>{% block title %} - Carpool{% endblock %}</title>
+{% block content %}
+    {% block nav%}
+    {% endblock %}
+    <h1>Carpool</h1>
+    <h2><a href="{{ url_for('createCarpool') }}">Create a carpool</a></h2>
+    //join page needs to be created
+    <h2><a href="">Join a carpool</a></h2>
+{% endblock %}

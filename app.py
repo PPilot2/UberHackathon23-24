@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, redirect
+from flask import Flask, render_template, url_for, redirect, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_wtf import FlaskForm
@@ -17,6 +17,7 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
+activePools = {}
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -63,6 +64,7 @@ def home():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    global user
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
@@ -76,7 +78,6 @@ def login():
 @app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
-    user = User.query.all()
     return render_template('dashboard.html', user=user)
 
 
@@ -100,6 +101,25 @@ def register():
 
     return render_template('register.html', form=form)
 
+@app.route('/pool')
+def pool():
+    return render_template('pool.html', user=user)
+
+@app.route('/createCarpool', methods=['GET', 'POST'])
+def createCarpool():
+    if request.method == 'POST':
+        # data = request.get_json()
+        location = request.form['location']
+        # print(data)
+        print(location)
+
+        return redirect(url_for('dashboard'))
+
+    return render_template('createPool.html', user=user)
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 if __name__ == "__main__":
     app.run(debug=True)

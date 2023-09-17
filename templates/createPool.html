@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% include 'nav.html' %}
+<title>{% block title %} - Create a carpool{% endblock %}</title>
+{% block content %}
+    {% block nav%}
+    {% endblock %}
+    <h2>Carpools will last 15 minutes before closing if another user does not join your carpool.</h2>
+    //full functionality has not been implemented on the backend yet
+    <form method="post">
+        <p>
+            <label for="location">What location are you going to?</label>
+            <input type="text" name="location" id="location" placeholder="location">
+        </p>
+        <p>
+            <label for="addressButton">What is your current address?</label>
+            <input type="button" name="addressButton" id="addressButton" placeholder="current address" value="Get Location" onclick="getLocation()">
+        </p>
+        <p>
+            <label for="submit">Create a carpool</label>
+            <input type="submit" name="submit">
+        </p>
+    </form>
+{% endblock %}
