@@ -1,3 +1,4 @@
+<!-- extends from base file and includes nav -->
 {% extends 'base.html' %}
 {% include 'nav.html' %}
 <title>{% block title %} - Dashboard{% endblock %}</title>
@@ -6,12 +7,14 @@
     {% endblock %}
     <h1>Hi {{user.username}}!</h1>
     <div class="blog-content">
+        <!-- for loop printing out posts -->
         {% for post in posts %}
             <a href="#">
                 <h2>{{ post['user'] }}</h2>
             </a>
             <h2>Location: {{ post['location'] }}</h2>
             <h2>Contact: {{ post['email'] }}</h2>
+            <h2>Created at: {{ post['created'] }}</h2>
             <hr>
         {% endfor %}
     </div>

@@ -1,3 +1,4 @@
+# imports
 from flask import Flask, render_template, url_for, redirect, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
@@ -9,6 +10,7 @@ from werkzeug.exceptions import abort
 import json, datetime
 import sqlite3
 
+# app config/db configuration
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SECRET_KEY'] = 'LD449VaAKb'
@@ -20,12 +22,12 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
-activeCarpools = []
-
+# loads users
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+# user table for users (id, username, password, email, userPosts (int))
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), nullable=False, unique=True)
@@ -33,6 +35,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(100), nullable=False, unique=True)
     userPosts = db.Column(db.Integer, default=0)
 
+# post table for posts (id, user, date created, location, email)
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user = db.Column(db.String(20), nullable=False, unique=False)
@@ -40,6 +43,7 @@ class Post(db.Model):
     location = db.Column(db.String(100), nullable=False, unique=False)
     email = db.Column(db.String(100), nullable=False, unique=False)
 
+# class register form (takes username, password, and email parameters)
 class RegisterForm(FlaskForm):
     username = StringField(validators=[
                            InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Username"})
@@ -59,7 +63,7 @@ class RegisterForm(FlaskForm):
             raise ValidationError(
                 'That username already exists. Please choose a different one.')
 
-
+# login form class (takes username, password and email)
 class LoginForm(FlaskForm):
     username = StringField(validators=[
                            InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Username"})
@@ -69,17 +73,18 @@ class LoginForm(FlaskForm):
 
     submit = SubmitField('Login')
 
-
+# route for homepage
 @app.route('/')
 def home():
     return render_template('home.html')
 
-
+# route to login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     global user
     form = LoginForm()
     if form.validate_on_submit():
+        # validates the form
         user = User.query.filter_by(username=form.username.data).first()
         if user:
             if bcrypt.check_password_hash(user.password, form.password.data):
@@ -87,22 +92,28 @@ def login():
                 return redirect(url_for('dashboard'))
     return render_template('login.html', form=form)
 
-
+# route to dashboard (kind of like homepage)
 @app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
     posts = Post.query.all()
     return render_template('dashboard.html', user=user, posts=posts)
 
+# route for 404 error handling
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+# route to logout
 @app.route('/logout', methods=['GET', 'POST'])
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('login'))
 
-
+# route to register
 @ app.route('/register', methods=['GET', 'POST'])
 def register():
+    # creates form
     form = RegisterForm()
 
     if form.validate_on_submit():
@@ -114,14 +125,13 @@ def register():
 
     return render_template('register.html', form=form)
 
-@app.route('/pool')
-def pool():
-    return render_template('pool.html', user=user)
-
+# route to create a carpool post
 @app.route('/createCarpool', methods=['GET', 'POST'])
+@login_required
 def createCarpool():
     if request.method == 'POST':
         location = request.form['location']
+        # creates the new post and adds to the table
         new_post = Post(location=location, user=user.username, created=datetime.datetime.now(), email=user.email)
         db.session.add(new_post)
         db.session.commit()
@@ -133,12 +143,25 @@ def createCarpool():
 
     return render_template('createPool.html', user=user)
 
-# @app.route('/posts/<int:user>')
-# def posts(postUser):
-#     allUserPosts = Post.query.filter(username=postUser)
-#     print(allUserPosts)
-#     return render_template('posts.html', userPosts=allUserPosts)
+# route to edit account information
+@app.route('/edit', methods=['GET', 'POST'])
+@login_required
+def edit():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        email = request.form['email']
 
+        User.username = username
+        User.password = password
+        User.email = email
+        db.session.commit()
+
+        return redirect(url_for('dashboard', user=user))
+
+    return render_template('editAccount.html')
+        
+# route for about page
 @app.route('/about')
 def about():
     return render_template('about.html')
