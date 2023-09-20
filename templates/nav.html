@@ -3,6 +3,13 @@
             <a href="{{ url_for('dashboard') }}" class="navLink">Dashboard</a>
             <a href="{{ url_for('pool') }}" class="navLink">Carpool</a>
             <a href="{{ url_for('about') }}" class="navLink">About</a>
-            <a href="{{url_for('logout')}}" class="navLink">Logout</a>
+            <div class="dropdown">
+                <button class="dropbtn">Account</button>
+                <div class="dropdown-content">
+                    <a href="{{url_for('logout')}}" class="navLink">Logout</a>
+                    <a href="#" class="navLink">My Posts</a>
+                </div>
+            </div>
+            
         </nav>
 {% endblock %}

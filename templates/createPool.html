@@ -4,27 +4,11 @@
 {% block content %}
     {% block nav%}
     {% endblock %}
-    <h2>Carpools will last until you close your carpool.</h2>
-    //full functionality has not been implemented on the backend yet
+    <h2>New Carpool</h2>
+    <h3>Please check your email after creating a carpool to check if someone has replied to your post.</h3>
     <form method="post">
-        <p>
-            <label for="location">What location are you going to?</label>
-            <input type="text" name="location" id="location" placeholder="location">
-        </p>
-        <p>
-            <label for="currentUserLocation">What is your current address?</label>
-            <input type="text" name="currentUserLocation" id="currentUserLocation" placeholder="current address">
-        </p>
-        <p>
-            <label for="userState">What state are you currently in?</label>
-            <input type="text" name="userState" id="userState" placeholder="State">
-        </p>
-        <p>
-            <label for="userCountry">What country are you currently in?</label>
-            <input type="text" name="userCountry" id="userCountry" placeholder="Country">
-        </p>
-        <p>
-            <input type="submit" name="submit" value="Submit">
-        </p>
+        <label for="location">Location</label>
+        <input name="location" id="location" type="text"></input>
+        <input type="submit" value="Submit">
     </form>
 {% endblock %}

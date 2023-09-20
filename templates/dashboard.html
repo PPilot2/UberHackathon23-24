@@ -5,4 +5,14 @@
     {% block nav%}
     {% endblock %}
     <h1>Hi {{user.username}}!</h1>
+    <div class="blog-content">
+        {% for post in posts %}
+            <a href="#">
+                <h2>{{ post['user'] }}</h2>
+            </a>
+            <h2>Location: {{ post['location'] }}</h2>
+            <h2>Contact: {{ post['email'] }}</h2>
+            <hr>
+        {% endfor %}
+    </div>
 {% endblock %}
